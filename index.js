@@ -51,7 +51,7 @@ module.exports = function (options) {
 
     // regexp uses 'g' flag to be able to match several occurrences
     // so it should be reset for each file
-    const TEMPLATE_URL_PATTERN = '[\'"]?templateUrl[\'"]?[\\s]*:[\\s]*[\'"`]([^\'"`]+)[\'"`]';
+    const TEMPLATE_URL_PATTERN = '[\'"]?templateUrl[\'"]?[\\s]*([:=])[\\s]*[\'"`]([^\'"`]+)[\'"`]';
 
     // variables which reset for each file
     var content;
@@ -62,7 +62,7 @@ module.exports = function (options) {
     const FOUND_IGNORE = {};
     const CODE_EXIT = {};
 
-    const TEMPLATE_BEGIN = Buffer('template:\'');
+    const TEMPLATE_BEGIN = Buffer('template');
     const TEMPLATE_END = Buffer('\'');
 
     /**
@@ -82,7 +82,7 @@ module.exports = function (options) {
             return;
         }
 
-        var relativeTemplatePath = matches[1];
+        var relativeTemplatePath = matches[2];
         var path = pathModule.join(filePath, relativeTemplatePath);
 
         log('template path: ' + path);
@@ -111,6 +111,7 @@ module.exports = function (options) {
 
                 cb(FOUND_SUCCESS, {
                     regexpMatch : matches,
+                    assignmentOperator: matches[1],
                     template: minifiedContent
                 });
             });
@@ -126,6 +127,8 @@ module.exports = function (options) {
 
             parts.push(Buffer(content.substring(index, matches.index)));
             parts.push(TEMPLATE_BEGIN);
+            parts.push(Buffer(entrance.assignmentOperator));
+            parts.push(Buffer('\''));
             parts.push(Buffer(escapeSingleQuotes(entrance.template)));
             parts.push(TEMPLATE_END);
 
@@ -167,7 +170,7 @@ module.exports = function (options) {
 
                 if (options.skipErrors) {
                     gutil.log(
-                        PLUGIN_NAME, 
+                        PLUGIN_NAME,
                         gutil.colors.yellow('[Warning]'),
                         gutil.colors.magenta(msg)
                     );
