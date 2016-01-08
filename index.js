@@ -46,8 +46,8 @@ module.exports = function (options) {
     if (options.debug === true) {
         debug = true;
     }
-    if (!options.useMinimizer){
-        options.useMinimizer = true;
+    if (options.useMinimizer == undefined){
+        options.useMinimizer = false;
     }
 
     var minimizer = new Minimize(options.minimize);
