@@ -111,6 +111,12 @@ Default value: Null
 
 define the max size limit in bytes for the template be embeded. Ignore templates which size exceed this limit
 
+#### options.useMinimizer
+type: `Boolean`
+Default value: true
+
+Allows the minimizer to be bypassed, in case minification is already completed before using this plugin.
+
 ## License
 This module is released under the MIT license.
 

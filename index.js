@@ -47,6 +47,9 @@ module.exports = function (options) {
     if (options.debug === true) {
         debug = true;
     }
+    if (options.useMinimizer == undefined){
+        options.useMinimizer = false;
+    }
 
     var minimizer = new Minimize(options.minimize);
     if (!options.minimize.parser) {
@@ -109,17 +112,24 @@ module.exports = function (options) {
                 return;
             }
 
-            minimizer.parse(templateContent, function (err, minifiedContent) {
-                if (err) {
-                    cb(FOUND_ERROR, 'Error while minifying angular template "' + path + '". Error from "minimize" plugin: ' + err);
-                    return;
-                }
+            if(options.useMinimizer){
+                minimizer.parse(templateContent, function (err, minifiedContent) {
+                    if (err) {
+                        cb(FOUND_ERROR, 'Error while minifying angular template "' + path + '". Error from "minimize" plugin: ' + err);
+                        return;
+                    }
 
+                    cb(FOUND_SUCCESS, {
+                        regexpMatch : matches,
+                        template: minifiedContent
+                    });
+                });
+            } else {
                 cb(FOUND_SUCCESS, {
                     regexpMatch : matches,
-                    template: minifiedContent
+                    template: templateContent
                 });
-            });
+            }
         });
     }
 
