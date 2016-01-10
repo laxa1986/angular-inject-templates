@@ -136,6 +136,24 @@ describe('gulp-angular-embed-templates', function () {
         });
     });
 
+    it('should dial with this.templateUrl={url}', function (done) {
+      var fakeFile = new File({contents: new Buffer('this.templateUrl=\'test/assets/hello-world-template.html\'')});
+      sut.write(fakeFile);
+      sut.once('data', function (file) {
+        assert.equal(file.contents.toString('utf8'), 'this.template=\'<strong>Hello World!</strong>\'');
+        done();
+      });
+    });
+
+    it('should dial with this.templateUrl {SPACES} = {SPACES} {url}', function (done) {
+      var fakeFile = new File({contents: new Buffer('this.templateUrl \t\r\n=\r\n\t \'test/assets/hello-world-template.html\'')});
+      sut.write(fakeFile);
+      sut.once('data', function (file) {
+        assert.equal(file.contents.toString('utf8'), 'this.template=\'<strong>Hello World!</strong>\'');
+        done();
+      });
+    });
+
     it('should skip errors if particular flag specified', function (done) {
         sut = embedTemplates({skipErrors: true});
         var fakeFile = new File({contents: new Buffer(JSON.stringify({
