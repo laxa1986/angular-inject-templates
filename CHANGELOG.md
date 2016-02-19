@@ -3,6 +3,10 @@
   * ability to embed ng-include
   * update javadoc with comparison with gulp-angular-templatecache
 
+2.1.3 / 2016-02-19
+==================
+  * Added feature to parse ES2015 based class files with this.templateUrl.
+
 2.1.2 / 2016-02-07
 ==================
   * fix typo in README.md file

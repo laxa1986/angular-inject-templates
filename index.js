@@ -4,6 +4,7 @@ var PluginError = gutil.PluginError;
 
 var ProcessorEngine = require('./lib/ProcessorEngine');
 var Angular1Processor = require('./lib/Angular1Processor');
+var Angular1ES2015Processor = require('./lib/Angular1ES2015Processor');
 var Angular2TypeScriptTemplateProcessor = require('./lib/Angular2TypeScriptProcessor');
 var utils = require('./lib/utils');
 
