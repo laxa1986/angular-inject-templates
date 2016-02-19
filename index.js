@@ -21,7 +21,7 @@ module.exports = function (options) {
             break;
         case 'js':
         default:
-            options.processors = [new Angular1Processor()];
+            options.processors = [new Angular1Processor(), new Angular1ES2015Processor()];
     }
 
     var logger = options.logger = utils.createLogger();
