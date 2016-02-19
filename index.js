@@ -6,6 +6,8 @@ var ProcessorEngine = require('./lib/ProcessorEngine');
 var Angular1Processor = require('./lib/Angular1Processor');
 var Angular1ES2015Processor = require('./lib/Angular1ES2015Processor');
 var Angular2TypeScriptTemplateProcessor = require('./lib/Angular2TypeScriptProcessor');
+var Angular1TypeScriptTemplateProcessor = require('./lib/Angular1TypeScriptProcessor');
+
 var utils = require('./lib/utils');
 
 const PLUGIN_NAME = 'gulp-angular-embed-template';
@@ -17,7 +19,7 @@ module.exports = function (options) {
     delete options.sourceType;
     switch (sourceType) {
         case 'ts':
-            options.processors = [new Angular2TypeScriptTemplateProcessor()];
+            options.processors = [new Angular2TypeScriptTemplateProcessor(), new Angular1TypeScriptTemplateProcessor()];
             break;
         case 'js':
         default:
