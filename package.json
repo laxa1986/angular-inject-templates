@@ -29,7 +29,8 @@
     "gulp-util": "^3.0.6",
     "minimize": "^1.8.1",
     "through2": "^2.0.1",
-    "htmlparser2": "~3.9.0"
+    "htmlparser2": "~3.9.0",
+    "object-assign": "4.0.1"
   },
   "devDependencies": {
     "mocha": "^2.4.5",
