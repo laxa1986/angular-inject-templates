@@ -5,6 +5,7 @@ var PluginError = gutil.PluginError;
 var ProcessorEngine = require('./lib/ProcessorEngine');
 var Angular1Processor = require('./lib/Angular1Processor');
 var Angular2TypeScriptTemplateProcessor = require('./lib/Angular2TypeScriptProcessor');
+var Angular2CssTemplateProcessor = require('./lib/Angular2CssProcessor');
 var utils = require('./lib/utils');
 
 const PLUGIN_NAME = 'gulp-angular-embed-template';
@@ -16,7 +17,7 @@ module.exports = function (options) {
     delete options.sourceType;
     switch (sourceType) {
         case 'ts':
-            options.processors = [new Angular1Processor(), new Angular2TypeScriptTemplateProcessor()];
+            options.processors = [new Angular1Processor(), new Angular2TypeScriptTemplateProcessor(), new Angular2CssTemplateProcessor()];
             break;
         case 'js':
         default:
