@@ -217,5 +217,13 @@ describe('gulp-angular-embed-templates', function () {
 
     it('should allow to remove attribute quotes', function (done) {
         testEmbed('attr-quotes-remove', done, {minimize:{quotes: false}});
-    })
+	})
+	
+	it('should embed styleUrls: path in Angular2.x just fine', function(done) {
+        testEmbed('angular2-styleUrls', done, {sourceType: 'ts', debug:true});
+    });
+
+    it('should embed styleUrls with less: path in Angular2.x just fine', function(done) {
+        testEmbed('angular2-less', done, {sourceType: 'ts', styleType: 'less', styleOptions: {compress: true}});
+    });
 });
