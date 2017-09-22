@@ -83,6 +83,7 @@ src
 +-hello-world
   |-hello-world-component.ts
   +-hello-world-template.html
+  +-hello-world-template.css
 ```
 
 `hello-world-component.ts`:
@@ -93,11 +94,13 @@ class Component extends Directive {
   controller: Controller;
   controllerAs: string = "vm";
   templateUrl: string = "angular2-template.html";
+  styleUrls: string[] = ["hello-world-template.css"]
 }
 // or
 @View({
     ...
-    templateUrl: 'angular2-template.html'
+    templateUrl: 'angular2-template.html',
+    styleUrls: ["hello-world-template.css"]
 })
 ```
 
@@ -107,6 +110,14 @@ class Component extends Directive {
 <task-cmp [model]="task" (complete)="onCmpl(task)">
     {{index}}
 </task-cmp>
+```
+
+`angular2-template.css`:
+
+```css
+.my-style {
+   padding-right: 4px; 
+}
 ```
 
 `gulpfile.js`:
@@ -129,11 +140,13 @@ class Component extends Directive {
   restrict: string = "E";
   controller: Controller;
   controllerAs: string = "vm";
+  styles: string[] = ['.my-style{padding-right:4px}']
   template:string='<task-cmp [model]="task" (complete)="onCmpl(task)">{{index}}</task-cmp>';
 }
 // or
 @View({
     ...
+    styles:['.my-style{padding-right:4px}'],
     template:'<task-cmp [model]="task" (complete)="onCmpl(task)">{{index}}</task-cmp>'
 })
 ```
@@ -148,6 +161,14 @@ class Component extends Directive {
 Type: `String`. Default value: 'js'. Available values:
 - 'js' both for Angular 1.x syntax `templateUrl: 'path'` and Angular 2.x syntax `@View({templateUrl: 'path'})`
 - 'ts' additionally support Angular 2.x TypeScript syntax `class Component {templateUrl: string = 'path'}`
+
+#### options.styleType
+Type: `String`. Default value: 'css'. Available values:
+- 'css' Use a CSS style processor for style URL templates.
+- 'less' Use a LESS style processor for style URL templates.
+
+#### options.styleOptions
+Type: `Object`. Options passed on to the style processor. For example `styleOptions: {compress: true}` will enabled the compression option on the style processor and embedded the compressed styles.
 
 #### options.basePath
 Type: `String`. By default plugin use path specified in 'templateUrl' as a relative path to corresponding '.js' file (file with 'templateUrl'). This option allow to specify another basePath to search templates as 'basePath'+'templateUrl'

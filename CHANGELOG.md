@@ -3,6 +3,11 @@
   * ability to embed ng-include
   * update javadoc with comparison with gulp-angular-templatecache
 
+2.3.1 / 2017-09-01
+==================
+  * Add support for embedding style templates. Support includes CSS (default) and LESS. You can use the styleType configuration option to enable the "less" processor.
+  {sourceType: 'ts', styleType: 'less', styleOptions: {compress: true}}
+
 2.3.0 / 2016-08-08
 ==================
   * Keep attribute quotes by default (add quotes if they missed in source code). Removing quotes caused serious of issues with bindings. You can get old behaviour by specifying config property minimize: {quotes: false}
