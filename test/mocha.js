@@ -62,9 +62,9 @@ describe('gulp-angular-embed-templates', function () {
         })
     }
 
-    beforeEach(function() {
+    beforeEach(function () {
         // Create a 'gulp-angular-embed-templates' plugin stream
-        sut = embedTemplates({debug: true});
+        sut = embedTemplates({ debug: true });
     });
 
     it('should dial with single quoted template paths', function (done) {
@@ -122,13 +122,13 @@ describe('gulp-angular-embed-templates', function () {
     });
 
     it('should skip errors if particular flag specified', function (done) {
-        testEmbed('skip-errors', done, {skipErrors: true});
+        testEmbed('skip-errors', done, { skipErrors: true });
     });
 
-    it('should not skip errors if skipErrors not defined', function(done) {
+    it('should not skip errors if skipErrors not defined', function (done) {
         testEmbed('skip-errors');
 
-        sut.once('error', function(error) {
+        sut.once('error', function (error) {
             assert.instanceOf(error, PluginError, 'error should be gulp PluginError');
             assert.equal(error.plugin, 'gulp-angular-embed-template');
             expect(error.message).to.startWith('Can\'t read template file');
@@ -138,7 +138,7 @@ describe('gulp-angular-embed-templates', function () {
 
     it('should use basePath to find the templates if specified', function (done) {
         // TODO: this is the path on my local machine
-        sut = embedTemplates({basePath: testDir, debug: true});
+        sut = embedTemplates({ basePath: testDir, debug: true });
         var entry = JSON.stringify({
             templateUrl: '/cases/hello-world/template.html'
         });
@@ -151,10 +151,10 @@ describe('gulp-angular-embed-templates', function () {
     });
 
     it('should ignore files bigger than the maxSize specified', function (done) {
-        testEmbed('max-size', done, {maxSize: 400})
+        testEmbed('max-size', done, { maxSize: 400 })
     });
 
-    it('should embed template with quotes properly', function(done) {
+    it('should embed template with quotes properly', function (done) {
         testEmbed('hard-attributes', done);
     });
 
@@ -163,7 +163,7 @@ describe('gulp-angular-embed-templates', function () {
     });
 
     it('should embed Angular 2.0 templates with <a [router-link]="[\'/search\']">Search</a>', function (done) {
-        testEmbed('angular2-typescript', done, {sourceType: 'ts'});
+        testEmbed('angular2-typescript', done, { sourceType: 'ts' });
     });
 
     it('should not change attributes case (for Angular2.0 beta)', function (done) {
@@ -171,44 +171,48 @@ describe('gulp-angular-embed-templates', function () {
     });
 
     it('should embed template when find pattern "templateUrl: string = \'path\'"', function (done) {
-        testEmbed('angular2-inheritance', done, {sourceType: 'ts'});
+        testEmbed('angular2-inheritance', done, { sourceType: 'ts' });
     });
 
-    it('should skip files if config.skipFiles function specified', function(done) {
-        testEmbed('skip-file', done, {skipFiles: function(file) {
-            var path = file.path;
-            return path.endsWith('skip-file/directive.js');
-        }});
+    it('should skip files if config.skipFiles function specified', function (done) {
+        testEmbed('skip-file', done, {
+            skipFiles: function (file) {
+                var path = file.path;
+                return path.endsWith('skip-file/directive.js');
+            }
+        });
     });
 
-    it('should skip files if config.skipFiles pattern specified', function(done) {
-        testEmbed('skip-file', done, {skipFiles: /skip-file\/directive\.js$/});
+    it('should skip files if config.skipFiles pattern specified', function (done) {
+        testEmbed('skip-file', done, { skipFiles: /skip-file\/directive\.js$/ });
     });
 
-    it('should skip certain template if config.skipTemplates regexp specified', function(done) {
-        testEmbed('skip-template', done, {skipTemplates: /\-large\.html$/});
+    it('should skip certain template if config.skipTemplates regexp specified', function (done) {
+        testEmbed('skip-template', done, { skipTemplates: /\-large\.html$/ });
     });
 
-    it('should skip certain template if config.skipTemplates function specified', function(done) {
-        testEmbed('skip-template', done, {skipTemplates: function(templatePath, fileContext) {
-            return templatePath.endsWith('-large.html') && fileContext.path.indexOf('skip-template') !== -1;
-        }});
+    it('should skip certain template if config.skipTemplates function specified', function (done) {
+        testEmbed('skip-template', done, {
+            skipTemplates: function (templatePath, fileContext) {
+                return templatePath.endsWith('-large.html') && fileContext.path.indexOf('skip-template') !== -1;
+            }
+        });
     });
 
-    it('should skip certain template if /*!*/ comment specified', function(done) {
+    it('should skip certain template if /*!*/ comment specified', function (done) {
         testEmbed('skip-comment', done);
     });
 
-    it('should embed only Angular1.x templates if sourceType "js" specified', function(done) {
-        testEmbed('angular2-ignore', done, {sourceType: 'js'});
+    it('should embed only Angular1.x templates if sourceType "js" specified', function (done) {
+        testEmbed('angular2-ignore', done, { sourceType: 'js' });
     });
 
-    it('should embed templateUrl: path in Angular2.x just fine', function(done) {
+    it('should embed templateUrl: path in Angular2.x just fine', function (done) {
         testEmbed('angular2-templateUrl', done);
     });
 
-    it('should embed templateUrl: strign = \'path\' in class definition', function(done) {
-        testEmbed('angular2-class', done, {sourceType: 'ts'});
+    it('should embed templateUrl: strign = \'path\' in class definition', function (done) {
+        testEmbed('angular2-class', done, { sourceType: 'ts' });
     });
 
     it('should keep quotes if html attribute has space', function (done) {
@@ -216,6 +220,69 @@ describe('gulp-angular-embed-templates', function () {
     });
 
     it('should allow to remove attribute quotes', function (done) {
-        testEmbed('attr-quotes-remove', done, {minimize:{quotes: false}});
+        testEmbed('attr-quotes-remove', done, { minimize: { quotes: false } });
+    })
+
+
+    describe('Support Angular1.x template=', function () {
+        beforeEach(function () {
+            // Create a 'gulp-angular-embed-templates' plugin stream
+            sut = embedTemplates({ debug: true, jsTemplateBegin: 'template=' });
+        });
+
+        it('should dial with single quoted template paths', function (done) {
+            var fakeFile = buildFakeFile('templateUrl= \'template.html\'');
+            sut.write(fakeFile);
+            sut.once('data', function (file) {
+                assert.equal(file.contents.toString('utf8'), 'template=\'<strong>Hello World!</strong>\'');
+                done();
+            });
+        });
+
+        it('should dial with double quoted template paths', function (done) {
+            var fakeFile = buildFakeFile('templateUrl= "template.html"');
+            sut.write(fakeFile);
+            sut.once('data', function (file) {
+                assert.equal(file.contents.toString('utf8'), 'template=\'<strong>Hello World!</strong>\'');
+                done();
+            });
+        });
+
+        it('should dial with new quotes ` in template paths', function (done) {
+            var fakeFile = buildFakeFile('templateUrl= `template.html`');
+            sut.write(fakeFile);
+            sut.once('data', function (file) {
+                assert.equal(file.contents.toString('utf8'), 'template=\'<strong>Hello World!</strong>\'');
+                done();
+            });
+        });
+
+        it('should dial with single quoted templateUrl key', function (done) {
+            var fakeFile = buildFakeFile('\'templateUrl\'= \'template.html\'');
+            sut.write(fakeFile);
+            sut.once('data', function (file) {
+                assert.equal(file.contents.toString('utf8'), 'template=\'<strong>Hello World!</strong>\'');
+                done();
+            });
+        });
+
+        it('should dial with double quoted templateUrl key', function (done) {
+            var fakeFile = buildFakeFile('"templateUrl"= \'template.html\'');
+            sut.write(fakeFile);
+            sut.once('data', function (file) {
+                assert.equal(file.contents.toString('utf8'), 'template=\'<strong>Hello World!</strong>\'');
+                done();
+            });
+        });
+
+        it('should dial with templateUrl {SPACES} : {SPACES} {url}', function (done) {
+            var fakeFile = buildFakeFile('"templateUrl" \t\r\n=\r\n\t  \'template.html\'');
+            sut.write(fakeFile);
+            sut.once('data', function (file) {
+                assert.equal(file.contents.toString('utf8'), 'template=\'<strong>Hello World!</strong>\'');
+                done();
+            });
+        });
+
     })
 });

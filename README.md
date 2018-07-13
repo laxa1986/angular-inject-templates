@@ -186,6 +186,13 @@ Type: `Number`. Not specified by default (templates of any size allowed)
 
 define the max size limit in bytes for the template be embedded. Ignore templates which size exceed this limit
 
+#### options.jsTemplateBegin
+Type: `String`. Default value: 'template:'
+
+angular template property value. Example it could be either `'template:'` or `'template='`. Explained below:
+- 'template:' both for Angular 1.x syntax `templateUrl: 'path'` and Angular 2.x syntax `@View({templateUrl: 'path'})`
+- 'template=' Additional support for Angular 1.x syntax `templateUrl= 'path'` 
+
 ## License
 This module is released under the MIT license.
 
