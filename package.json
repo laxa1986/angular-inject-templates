@@ -1,6 +1,6 @@
 {
-  "name": "gulp-angular-embed-templates",
-  "version": "2.3.0",
+  "name": "gulp-angular-embed-templates-casing",
+  "version": "1.0.0",
   "description": "gulp plugin to include the contents of angular templates inside directive's code",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/laxa1986/gulp-angular-embed-templates.git"
+    "url": "https://github.com/fresco/gulp-angular-embed-templates-casing"
   },
   "keywords": [
     "gulpplugin",
@@ -33,9 +33,10 @@
     "object-assign": "4.1.0"
   },
   "devDependencies": {
-    "mocha": "^3.0.2",
     "chai": "^3.5.0",
-    "chai-string": "^1.2.0"
+    "chai-string": "^1.2.0",
+    "mocha": "^3.0.2",
+    "true-case-path": "^2.2.1"
   },
   "files": [
     "package.json",
